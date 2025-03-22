@@ -8,7 +8,7 @@ IPAddress brodcastAddress = IPAddress.Broadcast;
 Console.Write("Введите свое имя: ");
 string? username = Console.ReadLine();
 
-await Task.Run(ReceiveMessage);
+Task.Run(ReceiveMessage);
 await SendMessageAsync();
 
 // отправка сообщений в группу
