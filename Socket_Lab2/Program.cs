@@ -91,7 +91,7 @@ static async Task RunServerAsync(string ip, int port, string filePath)
 /// <summary>
 /// Запуск клиента: подключение к серверу и приём файла
 /// </summary>
-static async Task RunClientAsync(string ip, int port, string filePath)
+static async Task RunClientAsync(string ip, int port, string saveFileName)
 {
     try
     {
@@ -105,7 +105,7 @@ static async Task RunClientAsync(string ip, int port, string filePath)
         await using var networkStream = client.GetStream();
 
         // Файл для записи полученных данных
-        string receivedFilePath = filePath;
+        string receivedFilePath = Path.Combine(Directory.GetCurrentDirectory(),saveFileName);
         await using var fileStream = File.Create(receivedFilePath);
 
         // Приём данных и запись их в файл
@@ -116,8 +116,8 @@ static async Task RunClientAsync(string ip, int port, string filePath)
             await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead));
         }
 
-        Console.WriteLine("""
-            Файл успешно получен и сохранён как received_file.txt
+        Console.WriteLine($"""
+            Файл успешно получен и сохранён как {receivedFilePath}
             """);
     }
     catch (Exception ex)
