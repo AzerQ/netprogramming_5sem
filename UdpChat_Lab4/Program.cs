@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using UdpChat_Lab4;
 
-int localPort = 8001;
+int localPort = 11000;
 IPAddress brodcastAddress = SelectBroadcastAdress();
 Console.Write("Введите свое имя: ");
 string? username = Console.ReadLine();
