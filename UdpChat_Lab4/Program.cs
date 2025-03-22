@@ -1,9 +1,11 @@
 ﻿using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
+using UdpChat_Lab4;
 
 int localPort = 8001;
-IPAddress brodcastAddress = IPAddress.Parse("235.5.5.11");
+IPAddress brodcastAddress = SelectBroadcastAdress();
 Console.Write("Введите свое имя: ");
 string? username = Console.ReadLine();
 
@@ -38,5 +40,34 @@ async Task ReceiveMessageAsync()
         var result = await receiver.ReceiveAsync();
         string message = Encoding.UTF8.GetString(result.Buffer);
         Console.WriteLine(message);
+    }
+}
+
+IPAddress SelectBroadcastAdress()
+{
+    var broadcastInfo = GetBroadCastInfo().DistinctBy(b => b.MaskAddress);
+    byte userChoise = 0;
+    int i = 0;
+    foreach (var broadcast in broadcastInfo)
+    {
+        Console.WriteLine("{0}: {1}", i++, broadcast);
+    }
+    Console.Write("Choise broadcast: ");
+    userChoise = byte.Parse(Console.ReadLine());
+    return broadcastInfo.ElementAt(userChoise).MaskAddress;
+}
+
+IEnumerable<BroadcastInfo> GetBroadCastInfo()
+{
+    NetworkInterface[] Interfaces = NetworkInterface.GetAllNetworkInterfaces();
+    foreach (NetworkInterface Interface in Interfaces)
+    {
+        if (Interface.NetworkInterfaceType == NetworkInterfaceType.Loopback) continue;
+        if (Interface.OperationalStatus != OperationalStatus.Up) continue;
+        UnicastIPAddressInformationCollection UnicastIPInfoCol = Interface.GetIPProperties().UnicastAddresses;
+        foreach (UnicastIPAddressInformation UnicatIPInfo in UnicastIPInfoCol)
+        {
+            yield return new BroadcastInfo(UnicatIPInfo.Address, UnicatIPInfo.IPv4Mask, Interface.Description);
+        }
     }
 }
