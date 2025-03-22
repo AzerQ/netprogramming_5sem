@@ -57,7 +57,7 @@ static async Task RunServerAsync(string ip, int port)
         await using var networkStream = client.GetStream();
 
         // Файл, который будем отправлять
-        const string filePath = "file_to_send.txt";
+        const string filePath = "Test.docx";
         if (!File.Exists(filePath))
         {
             Console.WriteLine("""
