@@ -4,17 +4,20 @@ using System.Net.Sockets;
 using System.Text;
 
 int localPort = 11000;
-IPAddress brodcastAddress = IPAddress.Broadcast;
+IPAddress broadcastAddress = IPAddress.Broadcast;
 Console.Write("Введите свое имя: ");
 string? username = Console.ReadLine();
 
-Task.Run(ReceiveMessage);
+Task.Run(ReceiveMessageAsync);
 await SendMessageAsync();
 
 // отправка сообщений в группу
 async Task SendMessageAsync()
 {
-    using var sender = new UdpClient(); // создаем UdpClient для отправки
+    var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+    socket.EnableBroadcast = true;
+    var broadcastEndpoint = new IPEndPoint(broadcastAddress, localPort);
+
     // отправляем сообщения
     while (true)
     {
@@ -25,20 +28,29 @@ async Task SendMessageAsync()
         message = $"{username}: {message}";
         byte[] data = Encoding.UTF8.GetBytes(message);
         // и отправляем в группу
-        await sender.SendAsync(data, data.Length, new IPEndPoint(brodcastAddress, localPort));
+        await socket.SendToAsync(data, broadcastEndpoint);
     }
 }
 // получение сообщений из группы
-void ReceiveMessage()
+async Task ReceiveMessageAsync()
 {
-    using var receiver = new UdpClient(localPort);
-    IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, localPort);
-    Console.WriteLine($"Listening for UDP broadcasts on port {localPort}...");
-   
+
+    var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+    socket.EnableBroadcast = true;
+    var broadcastEndpoint = new IPEndPoint(broadcastAddress, localPort);
+    socket.Bind(broadcastEndpoint);
+
     while (true)
     {
-        byte[] receivedBytes = receiver.Receive(ref endPoint);
-        string message = Encoding.UTF8.GetString(receivedBytes);
-        Console.WriteLine(message);
+
+        await Task.Delay(1000);
+
+        var buffer = new byte[1024];
+        await socket.ReceiveAsync(buffer);
+
+        string message = Encoding.UTF8.GetString(buffer);
+
+        if (!string.IsNullOrWhiteSpace(message))
+            Console.WriteLine(message);
     }
 }
