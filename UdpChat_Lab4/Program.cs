@@ -1,13 +1,14 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-int localPort = 8001;
-IPAddress brodcastAddress = IPAddress.Parse("235.5.5.11");
+int localPort = 11000;
+IPAddress brodcastAddress = IPAddress.Broadcast;
 Console.Write("Введите свое имя: ");
 string? username = Console.ReadLine();
 
-Task.Run(ReceiveMessageAsync);
+await Task.Run(ReceiveMessage);
 await SendMessageAsync();
 
 // отправка сообщений в группу
@@ -24,19 +25,20 @@ async Task SendMessageAsync()
         message = $"{username}: {message}";
         byte[] data = Encoding.UTF8.GetBytes(message);
         // и отправляем в группу
-        await sender.SendAsync(data, new IPEndPoint(brodcastAddress, localPort));
+        await sender.SendAsync(data, data.Length, new IPEndPoint(brodcastAddress, localPort));
     }
 }
 // получение сообщений из группы
-async Task ReceiveMessageAsync()
+void ReceiveMessage()
 {
-    using var receiver = new UdpClient(localPort); // UdpClient для получения данных
-    receiver.JoinMulticastGroup(brodcastAddress);
-    receiver.MulticastLoopback = false; // отключаем получение своих же сообщений
+    using var receiver = new UdpClient(localPort);
+    IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, localPort);
+    Console.WriteLine($"Listening for UDP broadcasts on port {localPort}...");
+   
     while (true)
     {
-        var result = await receiver.ReceiveAsync();
-        string message = Encoding.UTF8.GetString(result.Buffer);
+        byte[] receivedBytes = receiver.Receive(ref endPoint);
+        string message = Encoding.UTF8.GetString(receivedBytes);
         Console.WriteLine(message);
     }
 }
