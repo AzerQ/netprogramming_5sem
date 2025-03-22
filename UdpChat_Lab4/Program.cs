@@ -54,10 +54,10 @@ IPAddress SelectBroadcastAdress()
     }
     Console.Write("Choise broadcast: ");
     userChoise = byte.Parse(Console.ReadLine());
-    return broadcastInfo.ElementAt(userChoise).MaskAddress;
+    return Tools.GetBroadcastAddress(broadcastInfo.ElementAt(userChoise));
 }
 
-IEnumerable<BroadcastInfo> GetBroadCastInfo()
+IEnumerable<NetInfo> GetBroadCastInfo()
 {
     NetworkInterface[] Interfaces = NetworkInterface.GetAllNetworkInterfaces();
     foreach (NetworkInterface Interface in Interfaces)
@@ -67,7 +67,7 @@ IEnumerable<BroadcastInfo> GetBroadCastInfo()
         UnicastIPAddressInformationCollection UnicastIPInfoCol = Interface.GetIPProperties().UnicastAddresses;
         foreach (UnicastIPAddressInformation UnicatIPInfo in UnicastIPInfoCol)
         {
-            yield return new BroadcastInfo(UnicatIPInfo.Address, UnicatIPInfo.IPv4Mask, Interface.Description);
+            yield return new NetInfo(UnicatIPInfo.Address, UnicatIPInfo.IPv4Mask, Interface.Description);
         }
     }
 }
