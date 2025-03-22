@@ -3,19 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socket_Lab2", "Socket_Lab2\Socket_Lab2.csproj", "{FFD57353-E342-4DBE-82E0-86FB8C25EC5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Socket_Lab2", "Socket_Lab2\Socket_Lab2.csproj", "{FFD57353-E342-4DBE-82E0-86FB8C25EC5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat_Lab3", "Chat_Lab3\Chat_Lab3.csproj", "{86C8732F-451B-40D4-B2AB-934836563DB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat_Lab3", "Chat_Lab3\Chat_Lab3.csproj", "{86C8732F-451B-40D4-B2AB-934836563DB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UdpChat_Lab4", "UdpChat_Lab4\UdpChat_Lab4.csproj", "{D180A667-19D9-42F0-8D28-1FFEAC5A0BCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UdpChat_Lab4", "UdpChat_Lab4\UdpChat_Lab4.csproj", "{D180A667-19D9-42F0-8D28-1FFEAC5A0BCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FtpServer_Lab5", "FtpServer_Lab5\FtpServer_Lab5.csproj", "{27678876-EC76-4C11-A1C2-DB2E5220D32A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FtpServer_Lab5", "FtpServer_Lab5\FtpServer_Lab5.csproj", "{27678876-EC76-4C11-A1C2-DB2E5220D32A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpServer_Lab6", "HttpServer_Lab6\HttpServer_Lab6.csproj", "{9E8AA9E1-3227-455B-9BCD-19D62229A702}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpServer_Lab6", "HttpServer_Lab6\HttpServer_Lab6.csproj", "{9E8AA9E1-3227-455B-9BCD-19D62229A702}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CGI_Lab7", "CGI_Lab7\CGI_Lab7.csproj", "{F7C3EACB-08FF-45F5-8C46-04AEF6F82FC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CGI_Lab7", "CGI_Lab7\CGI_Lab7.csproj", "{F7C3EACB-08FF-45F5-8C46-04AEF6F82FC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMTP_Lab8", "SMTP_Lab8\SMTP_Lab8.csproj", "{A16C6CEB-2B66-4277-8AD4-DEE62D6F5FE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMTP_Lab8", "SMTP_Lab8\SMTP_Lab8.csproj", "{A16C6CEB-2B66-4277-8AD4-DEE62D6F5FE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsFTPserver", "WinFormsFtp\FTPserver\WinFormsFTPserver.csproj", "{9031730D-A762-429E-9F14-1354E05A7E89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{A16C6CEB-2B66-4277-8AD4-DEE62D6F5FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A16C6CEB-2B66-4277-8AD4-DEE62D6F5FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A16C6CEB-2B66-4277-8AD4-DEE62D6F5FE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9031730D-A762-429E-9F14-1354E05A7E89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9031730D-A762-429E-9F14-1354E05A7E89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9031730D-A762-429E-9F14-1354E05A7E89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9031730D-A762-429E-9F14-1354E05A7E89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
