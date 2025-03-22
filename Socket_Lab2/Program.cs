@@ -5,13 +5,13 @@ using System.Net.Sockets;
 // Код начинает выполняться сразу с тела файла Program.cs.
 
 // Проверка и парсинг аргументов командной строки
-if (args.Length < 3)
+if (args.Length < 4)
 {
     Console.WriteLine("""
         Некорректное число аргументов.
         Формат:
-          server <IP> <PORT>
-          client <IP> <PORT>
+          server <IP> <PORT> <FILE>
+          client <IP> <PORT> <FILE>
         """);
     return;
 }
@@ -19,6 +19,7 @@ if (args.Length < 3)
 var mode = args[0].ToLowerInvariant(); // "server" или "client"
 var ipStr = args[1];
 var portStr = args[2];
+string fileName = args[3];
 
 if (!int.TryParse(portStr, out var port))
 {
@@ -28,8 +29,8 @@ if (!int.TryParse(portStr, out var port))
 
 var task = mode switch
 {
-    "server" => RunServerAsync(ipStr, port),
-    "client" => RunClientAsync(ipStr, port),
+    "server" => RunServerAsync(ipStr, port, fileName),
+    "client" => RunClientAsync(ipStr, port, fileName),
     _ => Task.Run(() => Console.WriteLine("Первый аргумент должен быть 'server' или 'client'."))
 };
 
@@ -39,7 +40,7 @@ await task;
 /// <summary>
 /// Запуск сервера: приём подключения и отправка файла
 /// </summary>
-static async Task RunServerAsync(string ip, int port)
+static async Task RunServerAsync(string ip, int port, string filePath)
 {
     try
     {
@@ -56,8 +57,7 @@ static async Task RunServerAsync(string ip, int port)
         // Открываем сетевой поток
         await using var networkStream = client.GetStream();
 
-        // Файл, который будем отправлять
-        const string filePath = "Test.docx";
+
         if (!File.Exists(filePath))
         {
             Console.WriteLine("""
@@ -91,7 +91,7 @@ static async Task RunServerAsync(string ip, int port)
 /// <summary>
 /// Запуск клиента: подключение к серверу и приём файла
 /// </summary>
-static async Task RunClientAsync(string ip, int port)
+static async Task RunClientAsync(string ip, int port, string filePath)
 {
     try
     {
@@ -105,7 +105,7 @@ static async Task RunClientAsync(string ip, int port)
         await using var networkStream = client.GetStream();
 
         // Файл для записи полученных данных
-        const string receivedFilePath = "received_file.txt";
+        string receivedFilePath = filePath;
         await using var fileStream = File.Create(receivedFilePath);
 
         // Приём данных и запись их в файл
