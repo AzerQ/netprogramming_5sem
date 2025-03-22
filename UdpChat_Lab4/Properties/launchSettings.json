@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "UdpChat_Lab4": {
+      "commandName": "Project",
+      "commandLineArgs": "8888 alex"
+    }
+  }
+}

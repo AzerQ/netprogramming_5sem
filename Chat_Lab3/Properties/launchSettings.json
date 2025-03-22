@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Chat_Lab3": {
+      "commandName": "Project",
+      "commandLineArgs": "server 192.168.2.233 790"
+    }
+  }
+}

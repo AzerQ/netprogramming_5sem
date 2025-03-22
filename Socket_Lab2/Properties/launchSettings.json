@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Socket_Lab2": {
+      "commandName": "Project",
+      "commandLineArgs": "server 192.168.2.233 789"
+    }
+  }
+}
