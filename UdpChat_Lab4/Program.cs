@@ -5,7 +5,7 @@ using System.Text;
 using UdpChat_Lab4;
 
 int localPort = 11000;
-IPAddress brodcastAddress = SelectBroadcastAdress();
+IPAddress broadcastAddress = SelectBroadcastAdress();
 Console.Write("Введите свое имя: ");
 string? username = Console.ReadLine();
 
@@ -15,7 +15,10 @@ await SendMessageAsync();
 // отправка сообщений в группу
 async Task SendMessageAsync()
 {
-    using var sender = new UdpClient(); // создаем UdpClient для отправки
+    var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+    socket.EnableBroadcast = true;
+    var broadcastEndpoint = new IPEndPoint(broadcastAddress, localPort);
+
     // отправляем сообщения
     while (true)
     {
@@ -26,20 +29,30 @@ async Task SendMessageAsync()
         message = $"{username}: {message}";
         byte[] data = Encoding.UTF8.GetBytes(message);
         // и отправляем в группу
-        await sender.SendAsync(data, new IPEndPoint(brodcastAddress, localPort));
+        await socket.SendToAsync(data, broadcastEndpoint);
     }
 }
 // получение сообщений из группы
 async Task ReceiveMessageAsync()
 {
-    using var receiver = new UdpClient(localPort); // UdpClient для получения данных
-    receiver.JoinMulticastGroup(brodcastAddress);
-    receiver.MulticastLoopback = false; // отключаем получение своих же сообщений
+
+    var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+    socket.EnableBroadcast = true;
+    var broadcastEndpoint = new IPEndPoint(broadcastAddress, localPort);
+    socket.Bind(broadcastEndpoint);
+
     while (true)
     {
-        var result = await receiver.ReceiveAsync();
-        string message = Encoding.UTF8.GetString(result.Buffer);
-        Console.WriteLine(message);
+
+        await Task.Delay(1000);
+
+        var buffer = new byte[1024];
+        await socket.ReceiveAsync(buffer);
+
+        string message = Encoding.UTF8.GetString(buffer);
+
+        if (!string.IsNullOrWhiteSpace(message))
+            Console.WriteLine(message);
     }
 }
 
